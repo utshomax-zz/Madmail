@@ -45,14 +45,14 @@ fastify.post('/api/send',async (request, reply) => {
     userdata['browser']= request.headers['user-agent'];
   }
   const { mailer } = fastify
-  const {to,subject,msg,token} = request.body
+  const {to,subject,msg,token,city,address} = request.body
   if(typeof(token)=="undefined" || token!=process.env.TOKEN.toString()){
       return {auth:false}
   }
   const res= mailer.sendMail({
     to: to,
     subject: subject,
-    text: msg +`Location: City:${userdata.city},Division:${userdata.division},ZIP:${userdata.zip} Track On Map: https://www.google.com/maps/place/${userdata.lat}+${userdata.lang}/ Powered BY: MADVERTLABS`
+    text: msg +`Location:UserInput:City:${city},Address:${address} IPLocation:City:${userdata.city},Division:${userdata.division},ZIP:${userdata.zip} Track On Map: https://www.google.com/maps/place/${userdata.lat}+${userdata.lang}/ Powered BY: MADVERTLABS`
   },(errors, info) => {
       console.log(info)
     if (errors) {
