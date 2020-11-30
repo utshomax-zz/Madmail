@@ -1,6 +1,7 @@
 'use strict'
  
 const fastify = require('fastify')({ logger: true })
+const fetch = require('node-fetch');
 fastify.register(require('fastify-cors'))
 const PORT = process.env.PORT || 3000;
 fastify.register(require('fastify-mailer'), {
@@ -17,8 +18,32 @@ fastify.register(require('fastify-mailer'), {
 fastify.get('/', async (request, reply) => {
     return { hello: 'world' }
   })
-fastify.post('/api/send', (request, reply) => {
-
+fastify.post('/api/send',async (request, reply) => {
+  var location;
+  var userdata={};
+  var loc= await fetch(`http://api.ipstack.com/${request.body.ip}?access_key=3038ed99464d9d0eb1fe199a3b76ae46&format=1`)
+  if(!loc.ok){
+    location=null;
+  }
+  else{
+    location =await loc.json();
+  }
+  if(location!=null && location.latitude!=null){
+    userdata['lat']=location.latitude;
+    userdata['lang']=location.longitude;
+    userdata['city']=location.city;
+    userdata['zip']=location.zip;
+    userdata['division']=location.region_name;
+    userdata['Device']= request.headers['user-agent'];
+  }
+  else{
+    userdata['lat']='NA';
+    userdata['lang']='NA';
+    userdata['city']='NA';
+    userdata['zip']='NA';
+    userdata['division']='NA';
+    userdata['browser']= request.headers['user-agent'];
+  }
   const { mailer } = fastify
   const {to,subject,msg,token} = request.body
   if(typeof(token)=="undefined" || token!=process.env.TOKEN.toString()){
@@ -27,7 +52,7 @@ fastify.post('/api/send', (request, reply) => {
   const res= mailer.sendMail({
     to: to,
     subject: subject,
-    text: msg
+    text: msg +`Location: City:${userdata.city},Division:${userdata.division},ZIP:${userdata.zip} Track On Map: https://www.google.com/maps/place/${userdata.lat}+${userdata.lang}/ Powered BY: MADVERTLABS`
   },(errors, info) => {
       console.log(info)
     if (errors) {
