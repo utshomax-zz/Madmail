@@ -1,6 +1,7 @@
 'use strict'
  
 const fastify = require('fastify')({ logger: true })
+fastify.register(require('fastify-cors'))
 const PORT = process.env.PORT || 3000;
 fastify.register(require('fastify-mailer'), {
   defaults: { from: 'MadvertLabs <madmailserver@gmail.com>' },
