@@ -1,0 +1,18 @@
+{
+  "name": "madmail",
+  "version": "1.0.0",
+  "description": "Fastify Mailer Implimentation",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "author": "utsab utsho",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^3.8.0",
+    "fastify-mailer": "^2.0.2",
+    "nodemailer": "^6.4.16",
+    "nodemon": "^2.0.6"
+  }
+}
