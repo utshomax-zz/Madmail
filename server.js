@@ -49,10 +49,14 @@ fastify.post('/api/send',async (request, reply) => {
   if(typeof(token)=="undefined" || token!=process.env.TOKEN.toString()){
       return {auth:false}
   }
+
+  if(typeof(city)!="undefined"){
+    msg+=`Location:UserInput:City:${city},Address:${address}`
+  }
   const res= mailer.sendMail({
     to: to,
     subject: subject,
-    text: msg +`Location:UserInput:City:${city},Address:${address} IPLocation:City:${userdata.city},Division:${userdata.division},ZIP:${userdata.zip} Track On Map: https://www.google.com/maps/place/${userdata.lat}+${userdata.lang}/ Powered BY: MADVERTLABS`
+    text: msg + `IPLocation:City:${userdata.city},Division:${userdata.division},ZIP:${userdata.zip} Track On Map: https://www.google.com/maps/place/${userdata.lat}+${userdata.lang}/ Powered BY: MADVERTLABS`
   },(errors, info) => {
       console.log(info)
     if (errors) {
