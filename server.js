@@ -51,12 +51,12 @@ fastify.post('/api/send',async (request, reply) => {
   }
 
   if(typeof(city)!="undefined"){
-    msg+=`Location:UserInput:City:${city},Address:${address}`
+    msg+=` Location: UserInput:City:${city},Address:${address}`
   }
   const res= mailer.sendMail({
     to: to,
     subject: subject,
-    text: msg + `IPLocation:City:${userdata.city},Division:${userdata.division},ZIP:${userdata.zip} Track On Map: https://www.google.com/maps/place/${userdata.lat}+${userdata.lang}/ Powered BY: MADVERTLABS`
+    text: msg + ` IPLocation:City:${userdata.city},Division:${userdata.division},ZIP:${userdata.zip} Track On Map: https://www.google.com/maps/place/${userdata.lat}+${userdata.lang}/ Powered BY: MADVERTLABS`
   },(errors, info) => {
       console.log(info)
     if (errors) {
