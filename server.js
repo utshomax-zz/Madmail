@@ -3,7 +3,7 @@
 const fastify = require('fastify')({ logger: true })
 const fetch = require('node-fetch');
 fastify.register(require('fastify-cors'),{
-  origin: ['http://localhost:3000/','https://localhost:3000'],
+  origin: ['http://localhost:3000/','https://localhost:3000','http://localhost:3000'],
 })
 const PORT = process.env.PORT || 3000;
 fastify.register(require('fastify-mailer'), {
