@@ -2,7 +2,9 @@
  
 const fastify = require('fastify')({ logger: true })
 const fetch = require('node-fetch');
-fastify.register(require('fastify-cors'))
+fastify.register(require('fastify-cors'),{
+  origin: "*",
+})
 const PORT = process.env.PORT || 3000;
 fastify.register(require('fastify-mailer'), {
   defaults: { from: 'MadvertLabs <madmailserver@gmail.com>' },
